@@ -1,0 +1,17 @@
+tasks:
+  - name: Install smee globally
+    command: npm install -g smee-client
+  - name: Create an .env file
+    command: |
+      cat > .env.yaml << EOF
+      APP_ID=953917
+      WEBHOOK_SECRET=secret
+      LOG_LEVEL=trace
+      WEBHOOK_PROXY_URL=https://smee.io/elJV8uk66HIXM
+      EOF
+  - name: Install the probot app
+    command: npm install
+  - name: Run the probot app
+    command: npm run
+  - name: Run smee to listen to a channel
+    command: smee -u https://smee.io/elJV8uk66HIXM
