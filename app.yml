@@ -13,12 +13,7 @@
 # The list of events the GitHub App subscribes to.
 # Uncomment the event names below to enable them.
 default_events:
-  - member
-  - membership
-  - organization
-  - repository
-  - team_add
-  - repository_ruleset
+  - label
   # - check_run
   # - check_suite
   # - commit_comment

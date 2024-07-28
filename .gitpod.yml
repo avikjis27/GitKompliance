@@ -12,4 +12,4 @@ tasks:
       EOF
   - name: Run the probot app
     init: npm install
-    command: npm run
+    command: npm start

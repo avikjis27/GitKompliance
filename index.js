@@ -1,32 +1,29 @@
-/**
- * This is the main entrypoint to your Probot app
- * @param {import('probot').Probot} app
- */
+import fs from 'fs';
+import path from 'path'
+import process from 'process'
+import jsonfile from 'jsonfile'
+
 export default (app) => {
-  // Your code here
-  app.log.info("Yay, the app was loaded!");
+  app.log.info("GitKompliance was loaded successfully!");
+  app.on('label.created', async (context) => {
+    var baseDIr = 'rules/repo-ruleset'
+    fs.readdir(baseDIr, function (err, files) {
+      if (err) {
+        console.error("Could not list the directory.", err);
+        process.exit(1);
+      }
+      files.forEach(function (file, index) {
+        var filePath = path.join(baseDIr, file);
+        jsonfile
+          .readFile(filePath)
+          .then((data) => {
+            context.octokit.rest.repos.createRepoRuleset(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+    })
 
-  app.on("repository_ruleset.created", async (context) => {
-    const issueComment = context.issue({
-      body: "Thanks for opening this issue!",
-    });
-    //return context.octokit.issues.createComment(issueComment);
   });
-  app.on("repository_ruleset.edited", async (context) => {
-    const issueComment = context.issue({
-      body: "Thanks for opening this issue!",
-    });
-    //return context.octokit.issues.createComment(issueComment);
-  });
-  app.on("repository_ruleset.deleted", async (context) => {
-    const issueComment = context.issue({
-      body: "Thanks for opening this issue!",
-    });
-    //return context.octokit.issues.createComment(issueComment);
-  });
-  // For more information on building apps:
-  // https://probot.github.io/docs/
-
-  // To get your app running against GitHub, see:
-  // https://probot.github.io/docs/development/
 };
